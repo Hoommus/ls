@@ -1,12 +1,14 @@
 #include "../include/ft_ls.h"
 
-char	*create_path(char *dirname, char *filename)
+char	*create_path(char *oldpath, char *filename)
 {
 	char	*full;
 
-	dirname = ft_strjoin(dirname, "/");
-	full = ft_strjoin(dirname, filename);
-	free(dirname);
+	//if (ft_strlen(oldpath) == 1 && oldpath[0] != '/')
+		oldpath = ft_strjoin(oldpath, "/");
+	full = ft_strjoin(oldpath, filename);
+	//if (ft_strlen(oldpath) == 1 && oldpath[0] != '/')
+		free(oldpath);
 	return (full);
 }
 
@@ -29,29 +31,30 @@ t_file	*create_file(char *filename, struct stat *s, char *path)
 	new->size = s->st_size;
 	new->uid = s->st_uid;
 	new->gid = s->st_gid;
-//	new->uid_s = ft_strdup(getpwuid(new->uid)->pw_name);
-//	new->gid_s = ft_strdup(getgrgid(new->gid)->gr_name);
 	new->next = NULL;
 	return (new);
 }
 
+
+
 t_file	*set_widths(t_file *single)
 {
 	int		nbrlen;
+	char	*user;
+	char	*group;
 
+	user = getpwuid(single->uid)->pw_name;
+	group = getgrgid(single->gid)->gr_name;
 	nbrlen = ft_nbrlen(single->size);
 	if (g_params.bytew < nbrlen)
 		g_params.bytew = nbrlen;
 	nbrlen = ft_nbrlen(single->links);
 	if (g_params.linkw < nbrlen)
 		g_params.linkw = nbrlen;
-	nbrlen = ft_strlen(single->filename);
-	if (g_params.namew < nbrlen)
-		g_params.namew = nbrlen;
-	nbrlen = ft_strlen(getpwuid(single->uid)->pw_name);
+	nbrlen = ft_strlen(group);
 	if (g_params.groupw < nbrlen)
 		g_params.groupw = nbrlen + 1;
-	nbrlen = ft_strlen(getgrgid(single->gid)->gr_name);
+	nbrlen = ft_strlen(user);
 	if (g_params.userw < nbrlen)
 		g_params.userw = nbrlen + 1;
 	return (single);

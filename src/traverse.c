@@ -1,5 +1,14 @@
 #include "../include/ft_ls.h"
 
+void	clear_widths(void)
+{
+	g_params.namew = 0;
+	g_params.groupw = 0;
+	g_params.bytew = 0;
+	g_params.linkw = 0;
+	g_params.userw = 0;
+}
+
 t_file	*get_directory_contents(char *dirname, DIR *dir)
 {
 	char			*full_path;
@@ -11,7 +20,7 @@ t_file	*get_directory_contents(char *dirname, DIR *dir)
 	list_head = NULL;
 	list_tail = NULL;
 	if (dir == NULL)
-		ft_printf("ft_ls: %s: %s\n", dirname, strerror(errno));
+		return (list_head);
 	while ((entity = readdir(dir)) != NULL)
 	{
 		if (stat(full_path = create_path(dirname, entity->d_name), &st) == 0)

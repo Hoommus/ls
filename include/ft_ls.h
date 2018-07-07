@@ -27,6 +27,12 @@
 # define F_COLOR  32
 # define F_NSORT 128
 
+# define IS_CURRENT(d)                                                 \
+(ft_strlen(d) == 3 && (d)[0] == '.' && (d)[1] == '/' && (d)[2] == '.') \
+
+# define IS_PARENT(d) (ft_strlen(d) == 2 && (d)[0] == '.' && (d)[1] == '.')
+# define IS_CURR(d) (ft_strlen(d) == 1 && (d)[0] == '.')
+
 /*
 ** write
 ** opendir
@@ -46,7 +52,6 @@
 ** perror
 ** strerror
 ** exit
-**
 */
 
 short				g_flags;
@@ -78,13 +83,16 @@ typedef struct		s_params
 	int				namew;
 }					t_params;
 
+typedef int			(*t_sort_func)(t_file *, t_file *);
+
 /*
 ** Generic Utilities
 */
-char				*create_path(char *dirname, char *filename);
-void				traverse_read_print(char **names);
+char				*create_path(char *oldpath, char *filename);
+void				stat_read_print(char **names);
+
 /*
-**
+** Hello
 */
 void				free_file(t_file *f);
 void				free_list(t_file *list);
@@ -93,7 +101,7 @@ int					parse_flags(int count, char **str);
 
 t_file				*get_directory_contents(char *dirname, DIR *dir);
 t_file				*create_file(char *filename, struct stat *s, char *path);
-
+void				clear_widths(void);
 /*
 ** List manipulations
 */
@@ -114,7 +122,10 @@ char				*get_readable_mode(mode_t mode);
 /*
 ** Sorting
 */
+t_sort_func			get_sort(void);
 t_file				*sort(t_file *list, int (*f)(t_file *a, t_file *b));
+int					compare_by_filename(t_file *a, t_file *b);
+int					compare_by_mtime(t_file *a, t_file *b);
 
 /*
 ** Output
