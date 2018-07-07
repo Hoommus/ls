@@ -2,7 +2,7 @@
 
 t_file	*get_directory_contents(char *dirname, DIR *dir)
 {
-	t_file			*single;
+	char			*full_path;
 	t_file			*list_head;
 	t_file			*list_tail;
 	struct stat		st;
@@ -14,17 +14,16 @@ t_file	*get_directory_contents(char *dirname, DIR *dir)
 		ft_printf("ft_ls: %s: %s\n", dirname, strerror(errno));
 	while ((entity = readdir(dir)) != NULL)
 	{
-		if (stat(entity->d_name, &st) == 0)
+		if (stat(full_path = create_path(dirname, entity->d_name), &st) == 0)
 		{
-			if (entity->d_name[0] == '.' && (g_flags & 2) != 2)
-				continue ;
-			single = set_widths(create_file(entity->d_name, &st));
-			list_add(&list_head, &list_tail, single);
+			if (!(entity->d_name[0] == '.' && (g_flags & 2) != 2))
+				list_add(&list_head, &list_tail, set_widths(
+					create_file(entity->d_name, &st, dirname)));
 		}
 		else
 			ft_printf("ft_ls: %s: %s\n", dirname, strerror(errno));
+		free(full_path);
 	}
 	closedir(dir);
 	return (list_head);
 }
-

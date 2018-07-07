@@ -2,15 +2,21 @@
 
 void	print_file(t_file *file)
 {
+	char	*date;
+	char	*mode;
+
+	mode = get_readable_mode(file->mode);
+	date = ft_strsub(ctime(&(file->mtime.tv_sec)), 4, 12);
 	if (g_flags & 1)
 		ft_printf("%s %*u %-*s %-*s %*lld %s %s\n",
-				get_readable_mode(file->mode), g_params.linkw, file->links,
-				g_params.userw, file->uid_s, g_params.groupw, file->gid_s,
-				g_params.bytew, file->size,
-				ft_strsub(ctime(&(file->mtime.tv_sec)), 4, 12),
-				file->filename);
+				mode, g_params.linkw, file->links,
+				g_params.userw,  getpwuid(file->uid)->pw_name,
+				g_params.groupw, getgrgid(file->gid)->gr_name,
+				g_params.bytew, file->size, date, file->filename);
 	else
-		ft_printf("%s\t\n", file->filename);
+		ft_printf("%s \n", file->filename);
+	free(date);
+	free(mode);
 }
 
 void	print_directory(t_file *list)
@@ -18,7 +24,10 @@ void	print_directory(t_file *list)
 	t_file	*copy;
 
 	copy = list;
-	print_total(list);
+	if ((g_flags & F_RECUR) && list != NULL)
+		ft_printf("\n%s:\n", list->path);
+	if ((g_flags & F_LONG) && copy != NULL)
+		print_total(list);
 	while (copy)
 	{
 		print_file(copy);

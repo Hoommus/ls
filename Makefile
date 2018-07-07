@@ -6,7 +6,7 @@
 #    By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/24 10:11:17 by vtarasiu          #+#    #+#              #
-#    Updated: 2018/07/03 14:22:51 by vtarasiu         ###   ########.fr        #
+#    Updated: 2018/07/06 19:17:44 by vtarasiu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ OBJ_DIR = ./obj/
 LIB_DIR = ./printf
 LIB_NAME = libftprintf.a
 
-LS_SRC = ft_ls.c errors.c modes.c print.c util.c traverse.c
+LS_SRC = ft_ls.c errors.c modes.c print.c util.c traverse.c sorts.c lists.c
 
 OBJ = $(addprefix $(OBJ_DIR), $(LS_SRC:.c=.o))
 
@@ -30,7 +30,7 @@ $(NAME): $(OBJ)
 	@mkdir -p $(OBJ_DIR)
 	cp $(LIB_DIR)/$(LIB_NAME) ./$(LIB_NAME)
 	echo $(OBJ)
-	gcc $(FLAGS) -o $(NAME) $(OBJ) -I $(HEADER) $(LIB_NAME)
+	gcc $(FLAGS) -o $(NAME) -g $(OBJ) -I $(HEADER) $(LIB_NAME)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@mkdir -p $(OBJ_DIR)
@@ -38,11 +38,8 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 
 all: $(NAME)
 
-debug: all
-	gcc -g $(FLAGS) -o $(EXEC) main.c libftprintf.a
-
 clean:
-	make -C ./libft clean
+	make -C libft clean
 	@echo "rm -rf $(OBJ_DIR)*.o"
 	@/bin/rm -rf $(OBJ)
 	/bin/rm -rf $(OBJ_DIR)
@@ -65,4 +62,4 @@ check:
 love:
 	@echo "Not all."
 
-.PHONY: clean all fclean re check love debug norme
+.PHONY: clean all fclean re check love norme

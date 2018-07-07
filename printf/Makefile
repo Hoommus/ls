@@ -45,7 +45,7 @@ debug: all
 	gcc -g $(FLAGS) -o $(EXEC) main.c libftprintf.a
 
 clean:
-	make -C ./libft clean
+	make -C $(LIB_DIR) clean
 	@echo "rm -rf $(OBJ_DIR)*.o"
 	@/bin/rm -rf $(OBJ)
 	/bin/rm -rf $(OBJ_DIR)
