@@ -10,17 +10,18 @@ t_sort_func			get_sort(void)
 		return (&compare_by_filename);
 }
 
-t_file				*sort(t_file *list, int (*f)(t_file *, t_file *))
+t_file				*sort(t_file *list, int (*compare)(t_file *, t_file *))
 {
 	t_file	*head;
 
 	head = list;
-	while (list != NULL && list->next != NULL && f != NULL)
+	while (list != NULL && list->next != NULL && compare != NULL)
 	{
-		if (f(list, list->next))
+		if (compare(list, list->next) > 0)
 		{
 			list_swap(head, list, list->next);
 			list = head;
+			continue ;
 		}
 		list = list->next;
 	}

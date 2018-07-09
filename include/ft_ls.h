@@ -123,7 +123,7 @@ char				*get_readable_mode(mode_t mode);
 ** Sorting
 */
 t_sort_func			get_sort(void);
-t_file				*sort(t_file *list, int (*f)(t_file *a, t_file *b));
+t_file				*sort(t_file *list, int (*compare)(t_file *a, t_file *b));
 int					compare_by_filename(t_file *a, t_file *b);
 int					compare_by_mtime(t_file *a, t_file *b);
 

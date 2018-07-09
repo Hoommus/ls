@@ -24,7 +24,7 @@ void	print_directory(t_file *list)
 	t_file	*copy;
 
 	copy = list;
-	if ((g_flags & F_RECUR) && list != NULL)
+	if ((g_flags & F_RECUR) && list != NULL && !IS_CURR(list->path))
 		ft_printf("\n%s:\n", list->path);
 	if ((g_flags & F_LONG) && copy != NULL)
 		print_total(list);

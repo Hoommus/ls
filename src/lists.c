@@ -2,14 +2,17 @@
 
 t_file	*list_swap(t_file *list, t_file *first, t_file *second)
 {
-	t_file	*copy;
+	t_file	swap;
+	t_file	*firstnext;
+	t_file	*secondnext;
 
-	copy = list;
-	while (copy->next != first)
-		copy = copy->next;
-	copy->next = second;
-	first->next = second->next;
-	second->next = first;
+	firstnext = first->next;
+	secondnext = second->next;
+	ft_memcpy(&swap, first, sizeof(t_file));
+	ft_memcpy(first, second, sizeof(t_file));
+	ft_memcpy(second, &swap, sizeof(t_file));
+	first->next = firstnext;
+	second->next = secondnext;
 	return (list);
 }
 

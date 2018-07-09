@@ -76,7 +76,7 @@ void	read_dir(char *dirname)
 	if (dir == NULL)
 		ft_printf("ft_ls: %s: %s\n", dirname, strerror(errno));
 	else
-		list = get_directory_contents(dirname, dir);
+		list = sort(get_directory_contents(dirname, dir), get_sort());
 	if (list != NULL)
 		print_directory(list);
 	else
@@ -124,7 +124,7 @@ int		main(int argc, char **argv)
 	if (*argv == NULL)
 		*(--argv) = ".";
 	stat_read_print(argv);
-//	system("leaks --fullStacks --fullContent --hex ft_ls");
+	system("leaks --fullStacks --fullContent --hex ft_ls");
 	return (0);
 }
 
