@@ -20,18 +20,33 @@ char	get_file_type(mode_t mode)
 		return ('-');
 }
 
-char	get_sticky_bit(mode_t mode)
+char	get_sticky_bit(t_file *file)
 {
-	if ((mode & S_ISVTX) == S_ISVTX)
-		return ('S');
-	else
-		return (' ');
+	char		buffer[1024];
+	acl_t		acl;
+	acl_entry_t	e;
+
+	acl = acl_get_link_np(file->full_name, ACL_TYPE_EXTENDED);
+	if (listxattr(file->full_name, buffer, 1024, XATTR_NOFOLLOW) > 0)
+	{
+		if (acl != NULL)
+			acl_free(acl);
+		return ('@');
+	}
+	else if (acl && acl_get_entry(acl, ACL_FIRST_ENTRY, &e) > -1)
+	{
+		acl_free(acl);
+		return ('+');
+	}
+	return (' ');
 }
 
-char	*get_readable_mode(mode_t mode)
+char	*get_readable_mode(t_file *file)
 {
 	char	*m;
+	mode_t	mode;
 
+	mode = file->mode;
 	m = ft_strnew(11);
 	m[0] = get_file_type(mode);
 	m[1] = (char)((mode & S_IRUSR) ? 'r' : '-');
@@ -43,7 +58,6 @@ char	*get_readable_mode(mode_t mode)
 	m[7] = (char)((mode & S_IROTH) ? 'r' : '-');
 	m[8] = (char)((mode & S_IWOTH) ? 'w' : '-');
 	m[9] = (char)((mode & S_IXOTH) ? 'x' : '-');
-	m[10] = get_sticky_bit(mode);
+	m[10] = get_sticky_bit(file);
 	return (m);
 }
-

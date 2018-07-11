@@ -1,6 +1,6 @@
 #include "../include/ft_ls.h"
 
-t_sort_func			get_sort(void)
+t_sort_func		get_sort(void)
 {
 	if (g_flags & F_SORTT)
 		return (&compare_by_mtime);
@@ -10,7 +10,7 @@ t_sort_func			get_sort(void)
 		return (&compare_by_filename);
 }
 
-t_file				*sort(t_file *list, int (*compare)(t_file *, t_file *))
+t_file			*sort(t_file *list, int (*compare)(t_file *, t_file *))
 {
 	t_file	*head;
 
@@ -28,12 +28,19 @@ t_file				*sort(t_file *list, int (*compare)(t_file *, t_file *))
 	return (head);
 }
 
-int					compare_by_filename(t_file *a, t_file *b)
+int				compare_by_filename(t_file *a, t_file *b)
 {
 	return ((g_flags & F_SORTR ? -1 : 1) * ft_strcmp(a->filename, b->filename));
 }
 
-int					compare_by_mtime(t_file *a, t_file *b)
+int				compare_by_mtime(t_file *a, t_file *b)
 {
-	return ((a->mtime.tv_sec - b->mtime.tv_sec) >= 0);
+	return ((g_flags & F_SORTR ? -1 : 1) *
+			((a->mtime.tv_sec - b->mtime.tv_sec) >= 0));
+}
+
+int				compare_by_size(t_file *a, t_file *b)
+{
+	return ((g_flags & F_SORTR ? -1 : 1) *
+			((a->mtime.tv_sec - b->mtime.tv_sec) >= 0));
 }

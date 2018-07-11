@@ -6,7 +6,7 @@
 #    By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/24 10:11:17 by vtarasiu          #+#    #+#              #
-#    Updated: 2018/07/06 19:17:44 by vtarasiu         ###   ########.fr        #
+#    Updated: 2018/07/09 19:16:00 by vtarasiu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ OBJ_DIR = ./obj/
 LIB_DIR = ./printf
 LIB_NAME = libftprintf.a
 
-LS_SRC = ft_ls.c errors.c modes.c print.c util.c traverse.c sorts.c lists.c
+LS_SRC = ft_ls.c errors.c modes.c print.c util.c traverse.c sorts.c lists.c \
+         memory.c parsing.c
 
 OBJ = $(addprefix $(OBJ_DIR), $(LS_SRC:.c=.o))
 
@@ -29,7 +30,6 @@ $(NAME): $(OBJ)
 	make -C $(LIB_DIR)
 	@mkdir -p $(OBJ_DIR)
 	cp $(LIB_DIR)/$(LIB_NAME) ./$(LIB_NAME)
-	echo $(OBJ)
 	gcc $(FLAGS) -o $(NAME) -g $(OBJ) -I $(HEADER) $(LIB_NAME)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c

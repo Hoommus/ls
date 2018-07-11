@@ -4,38 +4,26 @@ char	*create_path(char *oldpath, char *filename)
 {
 	char	*full;
 
-	//if (ft_strlen(oldpath) == 1 && oldpath[0] != '/')
-		oldpath = ft_strjoin(oldpath, "/");
+	oldpath = ft_strjoin(oldpath, "/");
 	full = ft_strjoin(oldpath, filename);
-	//if (ft_strlen(oldpath) == 1 && oldpath[0] != '/')
-		free(oldpath);
+	free(oldpath);
 	return (full);
 }
 
-t_file	*create_file(char *filename, struct stat *s, char *path)
+void	set_dev_width(t_file *single)
 {
-	t_file	*new;
+	int		nbrlen;
 
-	new = (t_file *)malloc(sizeof(t_file));
-	if (new == NULL)
-		return (NULL);
-	new->filename = ft_strdup(filename);
-	new->path = ft_strdup(path);
-	new->blocks = s->st_blocks;
-	new->links = s->st_nlink;
-	new->atime = s->st_atimespec;
-	new->mtime = s->st_mtimespec;
-	new->ctime = s->st_ctimespec;
-	new->btime = s->st_birthtimespec;
-	new->mode = s->st_mode;
-	new->size = s->st_size;
-	new->uid = s->st_uid;
-	new->gid = s->st_gid;
-	new->next = NULL;
-	return (new);
+	if (single->dev)
+	{
+		nbrlen = ft_nbrlen(major(single->dev));
+		if (g_params.majorw < nbrlen)
+			g_params.majorw = nbrlen;
+		nbrlen = ft_nbrlen(minor(single->dev));
+		if (g_params.minorw < nbrlen)
+			g_params.minorw = nbrlen;
+	}
 }
-
-
 
 t_file	*set_widths(t_file *single)
 {
@@ -57,39 +45,26 @@ t_file	*set_widths(t_file *single)
 	nbrlen = ft_strlen(user);
 	if (g_params.userw < nbrlen)
 		g_params.userw = nbrlen + 1;
+	set_dev_width(single);
 	return (single);
 }
 
-void	free_array(char **array)
-{
-	int		i;
+/*
+** Yet another crutch, u know
+*/
 
-	i = 0;
-	while (array[i])
+int		does_cycle(char *pth)
+{
+	size_t	i;
+
+	i = ft_strlen(pth);
+	if (i < 3)
+		return (0);
+	if ((pth[i - 2] == '/' && pth[i - 1] == '.' && pth[i] == '\0')
+		|| (pth[i - 3] == '/' && pth[i - 2] == '.' && pth[i - 1] == '.')
+		|| (pth[i - 2] == '/' && pth[i - 1] == '.' && !ft_isalnum(pth[i])))
 	{
-		free(array[i]);
-		i++;
+		return (1);
 	}
-	free(array);
-}
-
-void	free_file(t_file *f)
-{
-	free(f->path);
-	free(f->filename);
-	free(f);
-}
-
-void	free_list(t_file *list)
-{
-	t_file	*swap;
-	t_file	*temp;
-
-	swap = list;
-	while (swap)
-	{
-		temp = swap->next;
-		free_file(swap);
-		swap = temp;
-	}
+	return (0);
 }

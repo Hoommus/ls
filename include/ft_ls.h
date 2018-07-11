@@ -11,6 +11,7 @@
 # include <string.h>
 # include <unistd.h>
 # include <dirent.h>
+# include <sys/acl.h>
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/xattr.h>
@@ -19,25 +20,21 @@
 # include "../printf/include/ft_printf.h"
 # include "../libft/libft.h"
 
-# define F_LONG    1
-# define F_ALL     2
-# define F_SORTT   4
-# define F_SORTR   8
-# define F_RECUR  16
-# define F_COLOR  32
-# define F_NSORT 128
+# define F_LONG     1
+# define F_ALL      2
+# define F_SORTT    4
+# define F_SORTR    8
+# define F_RECUR   16
+# define F_COLOR   32
+# define F_DUMMY   64
+# define F_NSORT  128
+# define F_SORTS  256
+# define F_SORTA  512
+# define F_SORTC 1024
 
-# define IS_CURRENT(d)                                                 \
-(ft_strlen(d) == 3 && (d)[0] == '.' && (d)[1] == '/' && (d)[2] == '.') \
-
-# define IS_PARENT(d) (ft_strlen(d) == 2 && (d)[0] == '.' && (d)[1] == '.')
 # define IS_CURR(d) (ft_strlen(d) == 1 && (d)[0] == '.')
 
 /*
-** write
-** opendir
-** readdir
-** closedir
 ** stat
 ** lstat
 ** getpwuid
@@ -47,8 +44,6 @@
 ** time
 ** ctime
 ** readlink
-** malloc
-** free
 ** perror
 ** strerror
 ** exit
@@ -61,6 +56,9 @@ typedef struct		s_file
 {
 	char			*filename;
 	char			*path;
+	char			*full_name;
+	char 			*whereto;
+	dev_t			dev;
 	uid_t			uid;
 	gid_t			gid;
 	nlink_t			links;
@@ -80,6 +78,8 @@ typedef struct		s_params
 	int				bytew;
 	int				userw;
 	int				groupw;
+	int				majorw;
+	int				minorw;
 	int				namew;
 }					t_params;
 
@@ -90,7 +90,7 @@ typedef int			(*t_sort_func)(t_file *, t_file *);
 */
 char				*create_path(char *oldpath, char *filename);
 void				stat_read_print(char **names);
-
+int					does_cycle(char *pth);
 /*
 ** Hello
 */
@@ -100,7 +100,7 @@ void				free_array(char **array);
 int					parse_flags(int count, char **str);
 
 t_file				*get_directory_contents(char *dirname, DIR *dir);
-t_file				*create_file(char *filename, struct stat *s, char *path);
+t_file				*create_file(struct stat *s, char *filename, char *path);
 void				clear_widths(void);
 /*
 ** List manipulations
@@ -117,7 +117,7 @@ int					throw_illegal_option(char f);
 /*
 ** Modes
 */
-char				*get_readable_mode(mode_t mode);
+char				*get_readable_mode(t_file *file);
 
 /*
 ** Sorting

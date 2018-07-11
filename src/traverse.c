@@ -9,30 +9,36 @@ void	clear_widths(void)
 	g_params.userw = 0;
 }
 
+/*
+** Function creates list with files in _dirname_ directory.
+** It does not add hidden files unless F_ALL (-a) flag specified.
+*/
+
 t_file	*get_directory_contents(char *dirname, DIR *dir)
 {
 	char			*full_path;
 	t_file			*list_head;
 	t_file			*list_tail;
 	struct stat		st;
-	struct dirent	*entity;
+	struct dirent	*ent;
 
 	list_head = NULL;
 	list_tail = NULL;
-	if (dir == NULL)
-		return (list_head);
-	while ((entity = readdir(dir)) != NULL)
+	while ((ent = readdir(dir)) != NULL)
 	{
-		if (stat(full_path = create_path(dirname, entity->d_name), &st) == 0)
+		if (stat(full_path = create_path(dirname, ent->d_name), &st) == 0)
 		{
-			if (!(entity->d_name[0] == '.' && (g_flags & 2) != 2))
-				list_add(&list_head, &list_tail, set_widths(
-					create_file(entity->d_name, &st, dirname)));
+			if ((ent->d_type & DT_LNK) == DT_LNK)
+				lstat(full_path, &st);
+			if (!(ent->d_name[0] == '.' && (g_flags & F_ALL) != 2))
+			{
+				list_add(&list_head, &list_tail,
+						set_widths(create_file(&st, ent->d_name, dirname)));
+			}
 		}
 		else
 			ft_printf("ft_ls: %s: %s\n", dirname, strerror(errno));
 		free(full_path);
 	}
-	closedir(dir);
 	return (list_head);
 }
