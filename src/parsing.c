@@ -14,10 +14,16 @@ int		get_flag(char f)
 		return (F_RECUR);
 	else if (f == 'G')
 		return (F_COLOR);
-	else if (f == 'i')
-		return (64);
+	else if (f == 'd')
+		return (F_DFILE);
 	else if (f == 'f')
 		return (F_NSORT);
+	else if (f == 'S')
+		return (F_SORTS);
+	else if (f == 'u')
+		return (F_SORTA);
+	else if (f == 'U')
+		return (F_SORTC);
 	else
 		return (throw_illegal_option(f));
 }

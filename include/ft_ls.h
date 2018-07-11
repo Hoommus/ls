@@ -26,7 +26,7 @@
 # define F_SORTR    8
 # define F_RECUR   16
 # define F_COLOR   32
-# define F_DUMMY   64
+# define F_DFILE   64
 # define F_NSORT  128
 # define F_SORTS  256
 # define F_SORTA  512
@@ -72,7 +72,7 @@ typedef struct		s_file
 	struct s_file	*next;
 }					t_file;
 
-typedef struct		s_params
+struct				s_params
 {
 	int				linkw;
 	int				bytew;
@@ -80,8 +80,8 @@ typedef struct		s_params
 	int				groupw;
 	int				majorw;
 	int				minorw;
-	int				namew;
-}					t_params;
+	int				ttycolumnw;
+};
 
 typedef int			(*t_sort_func)(t_file *, t_file *);
 
@@ -126,6 +126,9 @@ t_sort_func			get_sort(void);
 t_file				*sort(t_file *list, int (*compare)(t_file *a, t_file *b));
 int					compare_by_filename(t_file *a, t_file *b);
 int					compare_by_mtime(t_file *a, t_file *b);
+int					compare_by_ctime(t_file *a, t_file *b);
+int					compare_by_atime(t_file *a, t_file *b);
+int					compare_by_size(t_file *a, t_file *b);
 
 /*
 ** Output

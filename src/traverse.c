@@ -2,7 +2,7 @@
 
 void	clear_widths(void)
 {
-	g_params.namew = 0;
+	g_params.ttycolumnw = 0;
 	g_params.groupw = 0;
 	g_params.bytew = 0;
 	g_params.linkw = 0;

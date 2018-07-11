@@ -33,18 +33,16 @@ t_file	*set_widths(t_file *single)
 
 	user = getpwuid(single->uid)->pw_name;
 	group = getgrgid(single->gid)->gr_name;
-	nbrlen = ft_nbrlen(single->size);
-	if (g_params.bytew < nbrlen)
+	if (g_params.bytew < (nbrlen = ft_nbrlen(single->size)))
 		g_params.bytew = nbrlen;
-	nbrlen = ft_nbrlen(single->links);
-	if (g_params.linkw < nbrlen)
+	if (g_params.linkw < (nbrlen = ft_nbrlen(single->links)))
 		g_params.linkw = nbrlen;
-	nbrlen = ft_strlen(group);
-	if (g_params.groupw < nbrlen)
+	if (g_params.groupw < (nbrlen = ft_strlen(group)))
 		g_params.groupw = nbrlen + 1;
-	nbrlen = ft_strlen(user);
-	if (g_params.userw < nbrlen)
+	if (g_params.userw < (nbrlen = ft_strlen(user)))
 		g_params.userw = nbrlen + 1;
+	if (g_params.ttycolumnw < (nbrlen = ft_strlen(single->filename)))
+		g_params.ttycolumnw = nbrlen + 1;
 	set_dev_width(single);
 	return (single);
 }
