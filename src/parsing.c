@@ -24,6 +24,14 @@ int		get_flag(char f)
 		return (F_SORTA);
 	else if (f == 'U')
 		return (F_SORTC);
+	else if (f == '@')
+		return (F_SHOWAT);
+	else if (f == 'e')
+		return (F_SHOWE);
+	else if (f == 'C')
+		return (F_COLUMN);
+	else if (f == '1')
+		return (F_ONEPER);
 	else
 		return (throw_illegal_option(f));
 }

@@ -7,10 +7,13 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <stdio.h>
+# include <stdarg.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
 # include <dirent.h>
+# include <termios.h>
+# include <sys/ioctl.h>
 # include <sys/acl.h>
 # include <sys/stat.h>
 # include <sys/types.h>
@@ -20,17 +23,22 @@
 # include "../printf/include/ft_printf.h"
 # include "../libft/libft.h"
 
-# define F_LONG     1
-# define F_ALL      2
-# define F_SORTT    4
-# define F_SORTR    8
-# define F_RECUR   16
-# define F_COLOR   32
-# define F_DFILE   64
-# define F_NSORT  128
-# define F_SORTS  256
-# define F_SORTA  512
-# define F_SORTC 1024
+# define F_LONG       1
+# define F_ALL        2
+# define F_SORTT      4
+# define F_SORTR      8
+# define F_RECUR     16
+# define F_COLOR     32
+# define F_DFILE     64
+# define F_NSORT    128
+# define F_SORTS    256
+# define F_SORTA    512
+# define F_SORTC   1024
+# define F_SHOWE   2048
+# define F_SHOWAT  4096
+# define F_COLUMN  8192
+# define F_ONEPER 16384
+# define F_ACROSS 32768
 
 # define IS_CURR(d) (ft_strlen(d) == 1 && (d)[0] == '.')
 
@@ -49,8 +57,8 @@
 ** exit
 */
 
-short				g_flags;
-struct s_params		g_params;
+unsigned short		g_flags;
+struct s_params		g_param;
 
 typedef struct		s_file
 {
@@ -80,7 +88,9 @@ struct				s_params
 	int				groupw;
 	int				majorw;
 	int				minorw;
+	int				ttyw;
 	int				ttycolumnw;
+	int				ttyperline;
 };
 
 typedef int			(*t_sort_func)(t_file *, t_file *);

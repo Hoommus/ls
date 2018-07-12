@@ -88,10 +88,14 @@ void	stat_read_print(char **names)
 
 int		main(int argc, char **argv)
 {
+	struct winsize	term;
+
 	++argv;
 	argv += parse_flags(argc - 1, argv);
 	if (*argv == NULL)
 		*(--argv) = ".";
+	ioctl(1, TIOCGWINSZ, &term);
+	g_param.ttyw = term.ws_col;
 	stat_read_print(argv);
 //	system("leaks --fullStacks --fullContent --hex ft_ls");
 	return (0);

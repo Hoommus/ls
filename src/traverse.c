@@ -2,11 +2,11 @@
 
 void	clear_widths(void)
 {
-	g_params.ttycolumnw = 0;
-	g_params.groupw = 0;
-	g_params.bytew = 0;
-	g_params.linkw = 0;
-	g_params.userw = 0;
+	g_param.ttycolumnw = 0;
+	g_param.groupw = 0;
+	g_param.bytew = 0;
+	g_param.linkw = 0;
+	g_param.userw = 0;
 }
 
 /*

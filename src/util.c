@@ -17,11 +17,11 @@ void	set_dev_width(t_file *single)
 	if (single->dev)
 	{
 		nbrlen = ft_nbrlen(major(single->dev));
-		if (g_params.majorw < nbrlen)
-			g_params.majorw = nbrlen;
+		if (g_param.majorw < nbrlen)
+			g_param.majorw = nbrlen;
 		nbrlen = ft_nbrlen(minor(single->dev));
-		if (g_params.minorw < nbrlen)
-			g_params.minorw = nbrlen;
+		if (g_param.minorw < nbrlen)
+			g_param.minorw = nbrlen;
 	}
 }
 
@@ -33,16 +33,16 @@ t_file	*set_widths(t_file *single)
 
 	user = getpwuid(single->uid)->pw_name;
 	group = getgrgid(single->gid)->gr_name;
-	if (g_params.bytew < (nbrlen = ft_nbrlen(single->size)))
-		g_params.bytew = nbrlen;
-	if (g_params.linkw < (nbrlen = ft_nbrlen(single->links)))
-		g_params.linkw = nbrlen;
-	if (g_params.groupw < (nbrlen = ft_strlen(group)))
-		g_params.groupw = nbrlen + 1;
-	if (g_params.userw < (nbrlen = ft_strlen(user)))
-		g_params.userw = nbrlen + 1;
-	if (g_params.ttycolumnw < (nbrlen = ft_strlen(single->filename)))
-		g_params.ttycolumnw = nbrlen + 1;
+	if (g_param.bytew < (nbrlen = ft_nbrlen(single->size)))
+		g_param.bytew = nbrlen;
+	if (g_param.linkw < (nbrlen = ft_nbrlen(single->links)))
+		g_param.linkw = nbrlen;
+	if (g_param.groupw < (nbrlen = ft_strlen(group)))
+		g_param.groupw = nbrlen + 1;
+	if (g_param.userw < (nbrlen = ft_strlen(user)))
+		g_param.userw = nbrlen + 1;
+	if (g_param.ttycolumnw < (nbrlen = ft_strlen(single->filename)))
+		g_param.ttycolumnw = nbrlen + 1;
 	set_dev_width(single);
 	return (single);
 }
