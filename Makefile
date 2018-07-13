@@ -6,7 +6,7 @@
 #    By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/24 10:11:17 by vtarasiu          #+#    #+#              #
-#    Updated: 2018/07/09 19:16:00 by vtarasiu         ###   ########.fr        #
+#    Updated: 2018/07/13 11:24:03 by vtarasiu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,21 +45,27 @@ clean:
 	/bin/rm -rf $(OBJ_DIR)
 
 norme:
+	@echo "<<<===========>>>"
 	norminette $(wildcard $(SRC_DIR)*.c)
+	@echo "<<<===========>>>"
 	norminette $(HEADER)
-	norminette $(wildcard $(LIB_DIR)/*.c)
-	norminette $(wildcard $(LIB_DIR)/*.h)
+	@echo "<<<===========>>>"
+	norminette $(wildcard $(LIB_DIR)/src/*.c)
+	@echo "<<<===========>>>"
+	norminette $(wildcard $(LIB_DIR)/include/*.h)
+	@echo "<<<===========>>>"
+	norminette $(wildcard ./libft/*.c)
+	@echo "<<<===========>>>"
+	norminette $(wildcard ./libft/*.h)
 
 fclean: clean
 	make -C $(LIB_DIR) fclean
 	/bin/rm -f $(NAME)
+	/bin/rm -f $(LIB_NAME)
 
 re: fclean all
-
-check:
-	gcc -c ft_*.c -std=c99 -Wall -Wextra -Werror && norminette ft_*.c *.h
 
 love:
 	@echo "Not all."
 
-.PHONY: clean all fclean re check love norme
+.PHONY: clean all fclean re love norme

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_ls.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/07/13 11:14:58 by vtarasiu          #+#    #+#             */
+/*   Updated: 2018/07/13 11:18:59 by vtarasiu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/ft_ls.h"
 
 char	**get_filenames(char *dirname, t_file *list)
@@ -69,8 +81,8 @@ void	stat_read_print(char **names)
 
 	i = -1;
 	while (names[++i])
-		if (!(is_lnk = is_link(names[i])) && (sts = stat(names[i], &s)) == 0
-			&& !(does_cycle(names[i])) && (g_flags & F_DFILE) != F_DFILE
+		if (!(is_lnk = is_link(names[i])) && !(does_cycle(names[i]))
+			&& (sts = stat(names[i], &s)) == 0 && (g_flags & F_DFILE) != F_DFILE
 			&& S_ISDIR(s.st_mode))
 			read_dir(names[i]);
 		else if (sts == 0 && (!S_ISDIR(s.st_mode) || does_cycle(names[i])

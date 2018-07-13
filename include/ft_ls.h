@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_ls.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/07/13 11:15:12 by vtarasiu          #+#    #+#             */
+/*   Updated: 2018/07/13 11:15:54 by vtarasiu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FT_LS_H
 # define FT_LS_H
 
@@ -60,7 +72,7 @@ typedef struct		s_file
 	char			*filename;
 	char			*path;
 	char			*full_name;
-	char 			*whereto;
+	char			*whereto;
 	dev_t			dev;
 	uid_t			uid;
 	gid_t			gid;
