@@ -1,5 +1,25 @@
 #include "../include/ft_ls.h"
 
+int		get_another_flag(char f)
+{
+	if (f == 'f')
+		return (F_NSORT);
+	else if (f == 'S')
+		return (F_SORTS);
+	else if (f == 'u')
+		return (F_SORTA);
+	else if (f == 'U')
+		return (F_SORTC);
+	else if (f == 'C')
+		return (F_COLUMN);
+	else if (f == '1')
+		return (F_ONEPER);
+	else if (f == 'x')
+		return (F_ACROSS);
+	else
+		return (throw_illegal_option(f));
+}
+
 int		get_flag(char f)
 {
 	if (f == 'l')
@@ -16,24 +36,8 @@ int		get_flag(char f)
 		return (F_COLOR);
 	else if (f == 'd')
 		return (F_DFILE);
-	else if (f == 'f')
-		return (F_NSORT);
-	else if (f == 'S')
-		return (F_SORTS);
-	else if (f == 'u')
-		return (F_SORTA);
-	else if (f == 'U')
-		return (F_SORTC);
-	else if (f == '@')
-		return (F_SHOWAT);
-	else if (f == 'e')
-		return (F_SHOWE);
-	else if (f == 'C')
-		return (F_COLUMN);
-	else if (f == '1')
-		return (F_ONEPER);
 	else
-		return (throw_illegal_option(f));
+		return (get_another_flag(f));
 }
 
 int		parse_flags(int count, char **str)

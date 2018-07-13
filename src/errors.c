@@ -3,7 +3,7 @@
 int		throw_illegal_option(char f)
 {
 	ft_dprintf(2, "ft_ls: illegal option -- %c\n", f);
-	ft_dprintf(2, "usage: ft_ls [-1@laetrdfuCGRUS] [file ...]\n");
+	ft_dprintf(2, "usage: ft_ls [-1adflrtuxCRUS] [file ...]\n");
 	exit(1);
 	return (0);
 }

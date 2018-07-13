@@ -43,21 +43,16 @@
 # define IS_CURR(d) (ft_strlen(d) == 1 && (d)[0] == '.')
 
 /*
-** stat
-** lstat
-** getpwuid
-** getgrgid
 ** listxattr
 ** getxattr
 ** time
 ** ctime
-** readlink
 ** perror
 ** strerror
 ** exit
 */
 
-unsigned short		g_flags;
+unsigned int		g_flags;
 struct s_params		g_param;
 
 typedef struct		s_file
@@ -112,6 +107,8 @@ int					parse_flags(int count, char **str);
 t_file				*get_directory_contents(char *dirname, DIR *dir);
 t_file				*create_file(struct stat *s, char *filename, char *path);
 void				clear_widths(void);
+char				*strings_join(char *delimiter, ...);
+
 /*
 ** List manipulations
 */
@@ -121,7 +118,6 @@ t_file				*list_swap(t_file *list, t_file *first, t_file *second);
 /*
 ** Error Handling
 */
-void				throw_generic_error(char *problem_name);
 int					throw_illegal_option(char f);
 
 /*
@@ -145,6 +141,7 @@ int					compare_by_size(t_file *a, t_file *b);
 */
 void				print_file(t_file *file);
 void				print_directory(t_file *list);
+void				print_in_columns(t_file *list);
 void				print_total(t_file *list);
 t_file				*set_widths(t_file *single);
 

@@ -62,18 +62,20 @@ int		is_link(char *name)
 void	stat_read_print(char **names)
 {
 	int			i;
-	int			status;
+	int			sts;
 	int			is_lnk;
 	struct stat	s;
 	t_file		*list;
 
 	i = -1;
 	while (names[++i])
-		if (!(is_lnk = is_link(names[i])) && !(does_cycle(names[i]))
-			&& (status = stat(names[i], &s)) == 0 && S_ISDIR(s.st_mode))
+		if (!(is_lnk = is_link(names[i])) && (sts = stat(names[i], &s)) == 0
+			&& !(does_cycle(names[i])) && (g_flags & F_DFILE) != F_DFILE
+			&& S_ISDIR(s.st_mode))
 			read_dir(names[i]);
-		else if ((status == 0 && (!S_ISDIR(s.st_mode) || does_cycle(names[i])))
-				|| (is_lnk && (status == lstat(names[i], &s)) == 0))
+		else if (sts == 0 && (!S_ISDIR(s.st_mode) || does_cycle(names[i])
+				|| g_flags & F_DFILE
+				|| (is_lnk && (sts == lstat(names[i], &s)) == 0)))
 		{
 			if (!is_lnk && ft_strchr(names[i], '/') != NULL)
 				continue;
@@ -82,7 +84,7 @@ void	stat_read_print(char **names)
 			print_file(list = sort(create_file(&s, names[i], ""), get_sort()));
 			free_file(list);
 		}
-		else if (status != 0)
+		else if (sts != 0)
 			ft_printf("ft_ls: %s: %s\n", names[i], strerror(errno));
 }
 
@@ -94,9 +96,9 @@ int		main(int argc, char **argv)
 	argv += parse_flags(argc - 1, argv);
 	if (*argv == NULL)
 		*(--argv) = ".";
-	ioctl(1, TIOCGWINSZ, &term);
+	if (ioctl(1, TIOCGWINSZ, &term) == -1 || term.ws_col == 0)
+		g_flags |= F_ONEPER;
 	g_param.ttyw = term.ws_col;
 	stat_read_print(argv);
-//	system("leaks --fullStacks --fullContent --hex ft_ls");
 	return (0);
 }

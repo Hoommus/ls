@@ -13,6 +13,7 @@ char	*get_whereto(char *filename, struct stat *s, char *path)
 		ft_bzero(buf, 1024 * sizeof(char));
 		readlink(dummy, buf, 1024);
 		whereto = ft_strdup(buf);
+		free(dummy);
 	}
 	return (whereto);
 }

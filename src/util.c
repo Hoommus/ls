@@ -47,6 +47,15 @@ t_file	*set_widths(t_file *single)
 	return (single);
 }
 
+void	clear_widths(void)
+{
+	g_param.ttycolumnw = 0;
+	g_param.groupw = 0;
+	g_param.bytew = 0;
+	g_param.linkw = 0;
+	g_param.userw = 0;
+}
+
 /*
 ** Yet another crutch, u know
 */

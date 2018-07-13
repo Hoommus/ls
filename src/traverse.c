@@ -1,14 +1,5 @@
 #include "../include/ft_ls.h"
 
-void	clear_widths(void)
-{
-	g_param.ttycolumnw = 0;
-	g_param.groupw = 0;
-	g_param.bytew = 0;
-	g_param.linkw = 0;
-	g_param.userw = 0;
-}
-
 /*
 ** Function creates list with files in _dirname_ directory.
 ** It does not add hidden files unless F_ALL (-a) flag specified.

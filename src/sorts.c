@@ -4,11 +4,11 @@ t_sort_func		get_sort(void)
 {
 	if (g_flags & F_SORTT)
 		return (&compare_by_mtime);
-	else if  (g_flags & F_SORTS)
+	else if (g_flags & F_SORTS)
 		return (&compare_by_size);
-	else if  (g_flags & F_SORTA)
+	else if (g_flags & F_SORTA)
 		return (&compare_by_atime);
-	else if  (g_flags & F_SORTC)
+	else if (g_flags & F_SORTC)
 		return (&compare_by_ctime);
 	else if (g_flags & F_NSORT)
 		return (NULL);
@@ -41,6 +41,5 @@ int				compare_by_filename(t_file *a, t_file *b)
 
 int				compare_by_size(t_file *a, t_file *b)
 {
-	return ((g_flags & F_SORTR ? -1 : 1) *
-			((a->mtime.tv_sec - b->mtime.tv_sec) > 0));
+	return ((g_flags & F_SORTR ? -1 : 1) * ((a->size - b->size) > 0));
 }
