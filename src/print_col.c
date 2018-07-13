@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 11:14:49 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/07/13 11:14:49 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/07/13 11:56:48 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	print_in_columns_across(t_file **array, int len)
 	i = 0;
 	rows = len / g_param.ttyperline;
 	rows = rows == 0 ? 1 : rows;
+	if (g_param.ttyw % g_param.ttycolumnw > 0)
+		rows += 1;
 	while (i < rows)
 	{
 		j = 0;
@@ -75,6 +77,8 @@ void	print_in_columns_along(t_file **array, int len)
 	i = 0;
 	rows = len / g_param.ttyperline;
 	rows = rows == 0 ? 1 : rows;
+	if (g_param.ttyw % g_param.ttycolumnw > 0)
+		rows += 1;
 	while (i < rows)
 	{
 		j = 0;
