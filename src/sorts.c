@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 11:15:05 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/07/13 11:15:05 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/07/14 16:28:44 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ t_file			*sort(t_file *list, int (*compare)(t_file *, t_file *))
 {
 	t_file	*head;
 
+	if (compare == NULL || get_list_length(list) > 2000)
+		return (list);
 	head = list;
-	while (list != NULL && list->next != NULL && compare != NULL)
+	while (list != NULL && list->next != NULL)
 	{
 		if (compare(list, list->next) > 0)
 		{

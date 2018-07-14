@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 11:15:12 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/07/13 17:15:31 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/07/14 16:16:09 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ char				**filter_plain_files(char **names, int argc);
 */
 void				list_add(t_file **head, t_file **tail, t_file *to_add);
 t_file				*list_swap(t_file *list, t_file *first, t_file *second);
+int					get_list_length(t_file *list);
 
 /*
 ** Error Handling

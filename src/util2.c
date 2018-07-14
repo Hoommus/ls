@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 11:15:21 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/07/13 16:26:05 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/07/14 15:07:26 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ int		needs_dir_treatment(char *name, struct stat *s, int *status, int *is_ln)
 int		needs_file_treatment(char *name, struct stat *s,
 							const int *status, const int *is_ln)
 {
-	if(*status == 0 && (!S_ISDIR(s->st_mode) || does_cycle(name) || *is_ln
-						|| g_flags & F_DFILE ))
+	if (*status == 0 && (!S_ISDIR(s->st_mode) || does_cycle(name) || *is_ln
+						|| g_flags & F_DFILE))
 		return (1);
 	return (0);
 }

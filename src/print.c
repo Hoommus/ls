@@ -19,9 +19,9 @@ void	print_file_long(t_file *file, char *mode, char *date)
 	size_minor = g_param.majorw != 0 && g_param.minorw != 0 ?
 				g_param.majorw + g_param.minorw + 1 : g_param.bytew;
 	ft_printf("%s %*u %-*s %-*s %*lld %s %s\n", mode, g_param.linkw,
-			  file->links, g_param.userw, getpwuid(file->uid)->pw_name,
-			  g_param.groupw, getgrgid(file->gid)->gr_name,
-			  size_minor, file->size, date, file->filename);
+			file->links, g_param.userw, getpwuid(file->uid)->pw_name,
+			g_param.groupw, getgrgid(file->gid)->gr_name,
+			size_minor, file->size, date, file->filename);
 }
 
 void	print_device(t_file *file, char *mode, char *date)
