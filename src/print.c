@@ -6,11 +6,23 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 11:14:55 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/07/13 11:14:55 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/07/13 18:29:25 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_ls.h"
+
+void	print_file_long(t_file *file, char *mode, char *date)
+{
+	int		size_minor;
+
+	size_minor = g_param.majorw != 0 && g_param.minorw != 0 ?
+				g_param.majorw + g_param.minorw + 1 : g_param.bytew;
+	ft_printf("%s %*u %-*s %-*s %*lld %s %s\n", mode, g_param.linkw,
+			  file->links, g_param.userw, getpwuid(file->uid)->pw_name,
+			  g_param.groupw, getgrgid(file->gid)->gr_name,
+			  size_minor, file->size, date, file->filename);
+}
 
 void	print_device(t_file *file, char *mode, char *date)
 {
@@ -52,10 +64,7 @@ void	print_file(t_file *file)
 {
 	char	*date;
 	char	*mode;
-	int		size_minor;
 
-	size_minor = g_param.majorw != 0 && g_param.minorw != 0 ?
-				g_param.majorw + g_param.minorw + 1 : g_param.bytew;
 	mode = get_readable_mode(file);
 	date = ft_strsub(ctime(&(file->mtime.tv_sec)), 4, 12);
 	if (g_flags & F_LONG)
@@ -65,10 +74,7 @@ void	print_file(t_file *file)
 		else if (S_ISCHR(file->mode) || S_ISBLK(file->mode))
 			print_device(file, mode, date);
 		else
-			ft_printf("%s %*u %-*s %-*s %*lld %s %s\n", mode, g_param.linkw,
-					file->links, g_param.userw, getpwuid(file->uid)->pw_name,
-					g_param.groupw, getgrgid(file->gid)->gr_name,
-					size_minor, file->size, date, file->filename);
+			print_file_long(file, mode, date);
 	}
 	else
 		ft_printf("%s \n", file->filename);
@@ -81,7 +87,7 @@ void	print_directory(t_file *list)
 	t_file	*copy;
 	size_t	total;
 
-	if ((g_flags & F_RECUR) && list != NULL && !IS_CURR(list->path))
+	if (list != NULL && ((g_flags & F_RECUR) || !IS_CURR(list->path)))
 		ft_printf("\n%s:\n", list->path);
 	if ((g_flags & F_LONG) && list != NULL)
 	{

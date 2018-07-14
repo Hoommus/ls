@@ -6,11 +6,40 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 11:15:21 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/07/13 11:15:21 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/07/13 16:26:05 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_ls.h"
+
+int		is_link(char *name)
+{
+	char		buf[1024];
+
+	if (readlink(name, buf, 1024) != -1)
+		return (1);
+	return (0);
+}
+
+int		needs_dir_treatment(char *name, struct stat *s, int *status, int *is_ln)
+{
+	if ((*status = stat(name, s)) == 0
+		&& !(does_cycle(name))
+		&& !(*is_ln = is_link(name))
+		&& (g_flags & F_DFILE) != F_DFILE
+		&& S_ISDIR(s->st_mode))
+		return (1);
+	return (0);
+}
+
+int		needs_file_treatment(char *name, struct stat *s,
+							const int *status, const int *is_ln)
+{
+	if(*status == 0 && (!S_ISDIR(s->st_mode) || does_cycle(name) || *is_ln
+						|| g_flags & F_DFILE ))
+		return (1);
+	return (0);
+}
 
 size_t	malloc_str(va_list *args, size_t delimiter_size, char **whereto)
 {

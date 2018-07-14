@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 11:15:12 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/07/13 11:15:54 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/07/13 17:15:31 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,13 @@ t_file				*get_directory_contents(char *dirname, DIR *dir);
 t_file				*create_file(struct stat *s, char *filename, char *path);
 void				clear_widths(void);
 char				*strings_join(char *delimiter, ...);
-
+int					needs_dir_treatment(char *name, struct stat *s,
+										int *status, int *is_ln);
+int					needs_file_treatment(char *name, struct stat *s,
+								const int *status, const int *is_ln);
+int					is_link(char *name);
+char				**filter_errors(char **names, int argc);
+char				**filter_plain_files(char **names, int argc);
 /*
 ** List manipulations
 */
@@ -154,7 +160,6 @@ int					compare_by_size(t_file *a, t_file *b);
 void				print_file(t_file *file);
 void				print_directory(t_file *list);
 void				print_in_columns(t_file *list);
-void				print_total(t_file *list);
 t_file				*set_widths(t_file *single);
 
 #endif

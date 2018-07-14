@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 11:14:58 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/07/13 11:42:09 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/07/14 11:02:56 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	read_dir(char *dirname)
 	}
 	if (list != NULL)
 		print_directory(list);
-	else
+	else if (dir != NULL)
 		ft_printf("\n%s:\n", dirname);
 	if ((g_flags & F_RECUR))
 	{
@@ -62,11 +62,9 @@ void	read_dir(char *dirname)
 	free_list(list);
 }
 
-int		is_link(char *name)
+int		isp(char *name)
 {
-	char		buf[1024];
-
-	if (readlink(name, buf, 1024) != -1)
+	if (ft_strstr(name, "../"))
 		return (1);
 	return (0);
 }
@@ -81,28 +79,27 @@ void	stat_read_print(char **names)
 
 	i = -1;
 	while (names[++i])
-		if (!(is_lnk = is_link(names[i])) && !(does_cycle(names[i]))
-			&& (sts = stat(names[i], &s)) == 0 && (g_flags & F_DFILE) != F_DFILE
-			&& S_ISDIR(s.st_mode))
+	{
+		if (needs_dir_treatment(names[i], &s, &sts, &is_lnk))
 			read_dir(names[i]);
-		else if (sts == 0 && (!S_ISDIR(s.st_mode) || does_cycle(names[i])
-				|| g_flags & F_DFILE
-				|| (is_lnk && (sts == lstat(names[i], &s)) == 0)))
+		else if (needs_file_treatment(names[i], &s, &sts, &is_lnk))
 		{
-			if (!is_lnk && ft_strchr(names[i], '/') != NULL)
+			if ((!is_lnk && ft_strchr(names[i], '/') != NULL) || !isp(names[i]))
 				continue;
-			if (S_ISLNK(s.st_mode))
+			else if (is_lnk && isp(names[i]))
 				lstat(names[i], &s);
 			print_file(list = sort(create_file(&s, names[i], ""), get_sort()));
 			free_file(list);
 		}
 		else if (sts != 0)
 			ft_printf("ft_ls: %s: %s\n", names[i], strerror(errno));
+	}
 }
 
 int		main(int argc, char **argv)
 {
 	struct winsize	term;
+	char			**swap;
 
 	++argv;
 	argv += parse_flags(argc - 1, argv);
@@ -111,6 +108,11 @@ int		main(int argc, char **argv)
 	if (ioctl(1, TIOCGWINSZ, &term) == -1 || term.ws_col == 0)
 		g_flags |= F_ONEPER;
 	g_param.ttyw = term.ws_col;
+	argv = filter_errors(argv, argc);
+	swap = argv;
+	argv = filter_plain_files(argv, argc);
+	free(swap);
 	stat_read_print(argv);
+	free(argv);
 	return (0);
 }

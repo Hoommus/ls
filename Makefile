@@ -22,7 +22,7 @@ LIB_DIR = ./printf
 LIB_NAME = libftprintf.a
 
 LS_SRC = ft_ls.c errors.c modes.c print.c util.c traverse.c lists.c \
-         memory.c parsing.c sorts.c sorts2.c print_col.c util2.c
+         memory.c parsing.c sorts.c sorts2.c print_col.c util2.c util3.c
 
 OBJ = $(addprefix $(OBJ_DIR), $(LS_SRC:.c=.o))
 

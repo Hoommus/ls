@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 11:15:18 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/07/13 11:15:18 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/07/13 14:49:03 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_file	*set_widths(t_file *single)
 	if (g_param.userw < (nbrlen = ft_strlen(user)))
 		g_param.userw = nbrlen + 1;
 	if (g_param.ttycolumnw < (nbrlen = ft_strlen(single->filename)))
-		g_param.ttycolumnw = nbrlen + 1;
+		g_param.ttycolumnw = nbrlen + 2;
 	set_dev_width(single);
 	return (single);
 }
@@ -77,11 +77,11 @@ int		does_cycle(char *pth)
 	size_t	i;
 
 	i = ft_strlen(pth);
-	if (i < 3)
+	if (i < 3 || !(g_flags & F_RECUR))
 		return (0);
-	if ((pth[i - 2] == '/' && pth[i - 1] == '.' && pth[i] == '\0')
+	if (i > 3 && ((pth[i - 2] == '/' && pth[i - 1] == '.' && pth[i] == '\0')
 		|| (pth[i - 3] == '/' && pth[i - 2] == '.' && pth[i - 1] == '.')
-		|| (pth[i - 2] == '/' && pth[i - 1] == '.' && !ft_isalnum(pth[i])))
+		|| (pth[i - 2] == '/' && pth[i - 1] == '.' && !ft_isalnum(pth[i]))))
 	{
 		return (1);
 	}
